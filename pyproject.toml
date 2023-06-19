@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "gql-prompt"
+version = "0.1.0"
+description = ""
+authors = ["staticf0x <44530786+staticf0x@users.noreply.github.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "gql_prompt"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+prompt-toolkit = "^3.0.38"
+rich = "^13.4.2"
+graphql-core = "^3.2.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
