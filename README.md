@@ -12,3 +12,4 @@ Inside the prompt, you can write:
 - `.queries` to list all queries
 - `.mutations` to list all mutations
 - Any type/query/mutation name to display its fields, args, returns values
+- `_` to print the return type of a method you previously displayed

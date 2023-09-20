@@ -79,6 +79,7 @@ choices = [
 ]
 completer = FuzzyWordCompleter(choices)
 session = PromptSession()
+last_ret_type = None
 
 while True:
     try:
@@ -86,13 +87,18 @@ while True:
     except (EOFError, KeyboardInterrupt):
         break
 
+    if answer == "_" and last_ret_type:
+        answer = last_ret_type
+
     if answer in schema.type_map:
+        # Print type fields
         type_ = schema.type_map[answer]
         obj = GQLType(type_)
 
         for field in sorted(obj.fields):
             rprint(str(field))
     elif answer in schema.query_type.fields:
+        # Print query method, args and return type
         method = schema.query_type.fields[answer]
         obj = GQLMethod(answer, method)
 
@@ -101,7 +107,9 @@ while True:
             rprint(f"  {str(arg)}")
 
         rprint(f") -> [i]{obj.returns}[/i]")
+        last_ret_type = obj.returns
     elif answer in schema.mutation_type.fields:
+        # Print mutation method, args and return type
         method = schema.mutation_type.fields[answer]
         obj = GQLMethod(answer, method)
 
@@ -110,12 +118,16 @@ while True:
             rprint(f"  {str(arg)}")
 
         rprint(f") -> [i]{obj.returns}[/i]")
+        last_ret_type = obj.returns
     elif answer == ".types":
+        # Print all types
         for type_ in sorted(schema.type_map):
             rprint(f"[b]{type_}[/b]")
     elif answer == ".queries":
+        # Print all query methods
         for method in sorted(schema.query_type.fields):
             rprint(f"[b]{method}[/b]")
     elif answer == ".mutations":
+        # Print all mutation methods
         for method in sorted(schema.mutation_type.fields):
             rprint(f"[b]{method}[/b]")
