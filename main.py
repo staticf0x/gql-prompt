@@ -30,6 +30,9 @@ class Field:
 
         return f"[b]{self.name}[/b]: {field_type}"
 
+    def __lt__(self, other):
+        return self.name < other.name
+
 
 @dataclass
 class Arg:
@@ -87,7 +90,7 @@ while True:
         type_ = schema.type_map[answer]
         obj = GQLType(type_)
 
-        for field in obj.fields:
+        for field in sorted(obj.fields):
             rprint(str(field))
     elif answer in schema.query_type.fields:
         method = schema.query_type.fields[answer]
@@ -108,11 +111,11 @@ while True:
 
         rprint(f") -> [i]{obj.returns}[/i]")
     elif answer == ".types":
-        for type_ in schema.type_map:
+        for type_ in sorted(schema.type_map):
             rprint(f"[b]{type_}[/b]")
     elif answer == ".queries":
-        for method in schema.query_type.fields:
+        for method in sorted(schema.query_type.fields):
             rprint(f"[b]{method}[/b]")
     elif answer == ".mutations":
-        for method in schema.mutation_type.fields:
+        for method in sorted(schema.mutation_type.fields):
             rprint(f"[b]{method}[/b]")
